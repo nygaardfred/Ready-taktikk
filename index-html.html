@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<!-- saved from url=(0066)file:///C:/Users/FredrikDokkNygaard/Downloads/ready-taktikk_1.html -->
+<html lang="no"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ready – Taktikkkort</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./index-html_files/css2" rel="stylesheet">
+<style>
+:root{
+  --navy:#001233;--panel:#071a3e;--panel2:#0a2050;
+  --border:#1a3a7a;--blue:#0047AB;--blue2:#1a5fb4;
+  --gold:#F5C518;--white:#FFFFFF;--text:#D0DCEF;
+  --muted:#6888B0;--red:#e05555;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--navy);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--navy);}
+::-webkit-scrollbar-thumb{background:var(--blue);border-radius:2px;}
+
+header{background:#000d26;border-bottom:3px solid var(--gold);padding:10px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:300;gap:10px;}
+.logo-wrap{display:flex;align-items:center;gap:10px;min-width:0;}
+.club-name{font-family:'Bebas Neue',sans-serif;font-weight:400;font-size:1.3rem;letter-spacing:4px;color:var(--white);line-height:1.1;}
+.club-sub{font-size:0.55rem;color:var(--gold);letter-spacing:3px;margin-top:1px;font-family:'Barlow Condensed',sans-serif;}
+.header-btns{display:flex;gap:6px;flex-shrink:0;}
+.hbtn{background:transparent;border:1.5px solid rgba(255,255,255,.2);color:var(--white);
+  border-radius:6px;padding:7px 11px;font-family:'Barlow Condensed',sans-serif;
+  font-weight:500;font-size:0.82rem;cursor:pointer;letter-spacing:2px;transition:all .15s;white-space:nowrap;}
+.hbtn:hover{border-color:var(--gold);color:var(--gold);}
+.hbtn.active{background:rgba(245,197,24,.12);border-color:var(--gold);color:var(--gold);}
+.hbtn.blue{border-color:var(--blue2);}
+.hbtn.blue:hover,.hbtn.blue.active{background:rgba(0,71,171,.2);border-color:var(--gold);color:var(--gold);}
+.hbtn.share{border-color:rgba(74,222,128,.5);color:#4ade80;}
+.hbtn.share:hover{border-color:#4ade80;background:rgba(74,222,128,.1);}
+
+/* read-only banner */
+.readonly-banner{background:rgba(74,222,128,.1);border-bottom:1px solid rgba(74,222,128,.3);
+  padding:8px 16px;text-align:center;font-family:'Barlow Condensed',sans-serif;
+  font-size:0.75rem;letter-spacing:2px;color:#4ade80;}
+
+.screen{display:none;min-height:calc(100vh - 63px);}
+.screen.active{display:block;}
+
+/* ── LIBRARY ── */
+#screenLibrary{padding:16px;max-width:600px;margin:0 auto;}
+.lib-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
+.lib-title{font-family:'Bebas Neue',sans-serif;font-weight:400;font-size:1.6rem;letter-spacing:5px;color:var(--white);}
+.lib-subtitle{font-size:0.72rem;color:var(--muted);margin-top:1px;letter-spacing:1px;}
+.match-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;
+  padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:all .15s;border-left:4px solid var(--blue);}
+.match-card:hover{border-left-color:var(--gold);background:var(--panel2);}
+.match-card.training{border-left-color:#4ade80;}
+.match-card.tournament{border-left-color:#f87171;}
+.match-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+.match-opponent{font-family:'Bebas Neue',sans-serif;font-weight:400;font-size:1.3rem;color:var(--white);letter-spacing:3px;}
+.match-vs{font-size:0.7rem;color:var(--muted);margin-bottom:2px;letter-spacing:1px;}
+.match-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.meta-badge{font-family:'Barlow Condensed',sans-serif;font-size:0.63rem;font-weight:700;
+  letter-spacing:1px;padding:3px 8px;border-radius:4px;text-transform:uppercase;}
+.badge-type-serie{background:rgba(0,71,171,.3);color:#93c5fd;}
+.badge-type-turnering{background:rgba(248,113,113,.2);color:#fca5a5;}
+.badge-type-trening{background:rgba(74,222,128,.15);color:#86efac;}
+.badge-team{background:rgba(245,197,24,.15);color:var(--gold);}
+.badge-level{background:rgba(255,255,255,.07);color:var(--text);}
+.badge-date{background:rgba(255,255,255,.05);color:var(--muted);}
+.match-card-actions{display:flex;gap:6px;flex-shrink:0;}
+.icon-btn{background:transparent;border:1px solid var(--border);color:var(--muted);
+  border-radius:5px;padding:5px 8px;font-size:0.75rem;cursor:pointer;transition:all .15s;}
+.icon-btn:hover{border-color:var(--gold);color:var(--gold);}
+.icon-btn.danger:hover{border-color:var(--red);color:var(--red);}
+.icon-btn.share-ico{border-color:rgba(74,222,128,.4);color:#4ade80;}
+.icon-btn.share-ico:hover{border-color:#4ade80;background:rgba(74,222,128,.1);}
+.empty-state{text-align:center;padding:48px 20px;color:var(--muted);}
+.empty-icon{font-size:3rem;margin-bottom:12px;}
+.empty-text{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;letter-spacing:1px;margin-bottom:6px;color:var(--text);}
+
+/* ── MATCH FORM ── */
+#screenMatch{padding:16px;max-width:560px;margin:0 auto;}
+.form-back{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.back-btn{background:transparent;border:1px solid var(--border);color:var(--muted);
+  border-radius:6px;padding:6px 12px;font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:0.8rem;cursor:pointer;transition:all .15s;}
+.back-btn:hover{border-color:var(--blue);color:var(--white);}
+.form-title{font-family:'Bebas Neue',sans-serif;font-weight:400;font-size:1.5rem;color:var(--gold);letter-spacing:5px;}
+.form-section{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;}
+.form-section-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.68rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;}
+.pill-group{display:flex;gap:6px;flex-wrap:wrap;}
+.pill{background:transparent;border:1.5px solid var(--border);color:var(--muted);
+  border-radius:20px;padding:7px 14px;font-family:'Barlow Condensed',sans-serif;
+  font-weight:700;font-size:0.82rem;letter-spacing:1px;cursor:pointer;transition:all .15s;}
+.pill:hover{border-color:var(--blue2);color:var(--white);}
+.pill.selected{background:var(--blue);color:var(--white);border-color:var(--blue);}
+.pill.selected.gold-pill{background:var(--gold);color:#001233;border-color:var(--gold);}
+label.fl{font-size:0.62rem;letter-spacing:2px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;display:block;margin-bottom:5px;}
+input.fi,textarea.fi,select.fi{background:#071228;border:1px solid var(--border);color:var(--white);border-radius:6px;padding:10px 12px;font-family:'Barlow',sans-serif;font-size:0.9rem;outline:none;transition:border-color .15s;width:100%;}
+input.fi:focus,textarea.fi:focus{border-color:var(--blue);}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.field-row.full{grid-template-columns:1fr;}
+.field-group{display:flex;flex-direction:column;gap:4px;}
+.big-save-btn{width:100%;padding:14px;background:var(--gold);color:#001233;border:none;border-radius:8px;font-family:'Bebas Neue',sans-serif;font-weight:400;font-size:1.1rem;letter-spacing:4px;cursor:pointer;transition:all .15s;margin-top:4px;}
+.big-save-btn:hover{background:#e0b310;}
+
+/* ── TACTICS ── */
+.match-bar{background:#000d26;border-bottom:1px solid var(--border);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.match-bar-info{min-width:0;}
+.match-bar-vs{font-size:0.55rem;color:var(--muted);letter-spacing:2px;font-family:'Barlow Condensed',sans-serif;}
+.match-bar-name{font-family:'Bebas Neue',sans-serif;font-weight:400;font-size:1.1rem;color:var(--white);letter-spacing:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.match-bar-badges{display:flex;gap:4px;flex-wrap:wrap;margin-top:2px;}
+.match-bar-actions{display:flex;gap:6px;flex-shrink:0;}
+#overlay{display:none;position:fixed;top:63px;left:0;right:0;bottom:0;background:#000d26;z-index:150;overflow-y:auto;padding:18px 16px;}
+#overlay.open{display:block;}
+.nav-section{font-size:0.58rem;letter-spacing:4px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;margin:0 0 8px 2px;}
+.nav-group{margin-bottom:18px;}
+.nav-item{display:block;width:100%;padding:11px 16px;background:transparent;border:1px solid var(--border);border-left:3px solid transparent;border-radius:0 8px 8px 0;cursor:pointer;text-align:left;margin-bottom:5px;color:var(--muted);transition:all .15s;}
+.nav-item:hover{border-color:var(--blue2);color:var(--white);background:rgba(0,71,171,.1);}
+.nav-item.active{background:rgba(0,71,171,.2);border-color:var(--blue2);border-left-color:var(--gold);color:var(--white);}
+.nav-label{font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:1rem;letter-spacing:2px;}
+.nav-sub{font-size:0.7rem;color:var(--muted);margin-top:1px;}
+.nav-item.active .nav-sub{color:#A0B8D8;}
+#coachPanel{display:none;position:fixed;top:63px;left:0;right:0;bottom:0;background:var(--navy);z-index:140;overflow-y:auto;}
+#coachPanel.open{display:block;}
+.coach-header{background:#000d26;border-bottom:2px solid var(--blue);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:10;}
+.coach-title{font-family:'Bebas Neue',sans-serif;font-weight:400;font-size:1.2rem;color:var(--gold);letter-spacing:4px;}
+.coach-body{padding:16px;max-width:600px;margin:0 auto;}
+.editor-view-select{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;padding:12px;background:var(--panel);border:1px solid var(--border);border-radius:8px;}
+.ev-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:5px 11px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.78rem;cursor:pointer;letter-spacing:1px;transition:all .15s;}
+.ev-btn:hover{border-color:var(--blue);color:var(--white);}
+.ev-btn.active{background:var(--blue);color:var(--white);border-color:var(--blue);}
+.ev-btn.add-new{border-color:var(--gold);color:var(--gold);}
+.editor-section{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:12px;}
+.editor-section-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.68rem;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;}
+.player-table{width:100%;border-collapse:collapse;}
+.player-table th{font-size:0.56rem;letter-spacing:2px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-weight:700;text-transform:uppercase;padding:4px 6px;text-align:left;border-bottom:1px solid var(--border);}
+.player-table td{padding:5px 4px;vertical-align:middle;}
+.player-table input{background:#071228;border:1px solid var(--border);color:var(--white);border-radius:4px;padding:5px 7px;font-family:'Barlow',sans-serif;font-size:0.78rem;outline:none;transition:border-color .15s;width:100%;}
+.player-table input:focus{border-color:var(--blue);}
+.del-row{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:0.9rem;padding:3px 6px;border-radius:3px;transition:all .15s;}
+.del-row:hover{color:var(--red);}
+.action-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.abtn{padding:9px 16px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:1px;cursor:pointer;transition:all .15s;border:none;}
+.abtn.primary{background:var(--blue);color:var(--white);}
+.abtn.secondary{background:transparent;border:1px solid var(--border);color:var(--muted);}
+.abtn.secondary:hover{border-color:var(--blue);color:var(--white);}
+.abtn.danger{background:transparent;border:1px solid rgba(224,85,85,.4);color:var(--red);}
+.abtn.danger:hover{background:rgba(224,85,85,.12);}
+.abtn.gold{background:var(--gold);color:#001233;}
+.abtn.gold:hover{background:#e0b310;}
+.tactics-main{padding:14px 16px 40px;max-width:540px;margin:0 auto;}
+.tag-badge{display:inline-block;font-family:'Barlow Condensed',sans-serif;font-size:0.6rem;letter-spacing:3px;padding:3px 10px;border-radius:3px;margin-bottom:7px;font-weight:700;}
+.view-title{font-family:'Bebas Neue',sans-serif;font-weight:400;font-size:2.2rem;letter-spacing:6px;color:var(--white);line-height:1;}
+.view-subtitle{font-size:0.8rem;color:var(--muted);margin-top:3px;letter-spacing:1px;}
+.pitch-svg{width:100%;max-width:420px;display:block;margin:14px auto 0;border-radius:6px;box-shadow:0 8px 32px rgba(0,0,0,.6);}
+.player-hint{text-align:center;font-size:0.68rem;color:var(--muted);margin-top:9px;letter-spacing:1px;}
+.player-box{display:none;margin-top:11px;background:var(--panel);border:1px solid var(--gold);border-radius:8px;padding:13px;}
+.player-box.visible{display:block;}
+.player-box-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px;}
+.player-role{font-family:'Bebas Neue',sans-serif;font-weight:400;font-size:1.05rem;color:var(--gold);letter-spacing:3px;text-transform:uppercase;}
+.close-btn{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:4px;padding:2px 8px;font-size:0.7rem;cursor:pointer;transition:all .15s;}
+.close-btn:hover{border-color:var(--gold);color:var(--gold);}
+.player-desc{font-size:0.87rem;line-height:1.65;color:var(--text);}
+.info-card{margin-top:10px;background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:13px;}
+.card-label{font-size:0.56rem;letter-spacing:3px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:6px;text-transform:uppercase;}
+.card-text{font-size:0.86rem;line-height:1.65;color:var(--text);}
+.extra-card{margin-top:10px;background:var(--panel);border:1px solid rgba(245,197,24,.3);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:13px;}
+.extra-label{font-size:0.56rem;letter-spacing:3px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-weight:700;margin-bottom:6px;text-transform:uppercase;}
+.extra-text{font-size:0.86rem;line-height:1.68;color:var(--text);white-space:pre-line;}
+.legend{margin-top:12px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center;padding:10px;background:var(--panel);border:1px solid var(--border);border-radius:8px;}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:0.7rem;color:#A0B8D8;}
+.legend-dot{width:11px;height:11px;border-radius:50%;border:2px solid rgba(255,255,255,.35);}
+.principles{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
+.principle{background:var(--panel);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:12px 14px;}
+.principle-title{font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:1rem;color:var(--gold);letter-spacing:1px;margin-bottom:4px;}
+.principle-text{font-size:0.84rem;line-height:1.62;color:var(--text);}
+.bottom-nav{margin-top:18px;display:flex;gap:5px;flex-wrap:wrap;justify-content:center;}
+.bottom-btn{background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:20px;padding:6px 13px;font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:0.76rem;letter-spacing:2px;cursor:pointer;transition:all .15s;}
+.bottom-btn:hover{border-color:var(--blue);color:var(--white);}
+.bottom-btn.active{background:var(--blue);color:var(--white);border-color:var(--blue);}
+
+/* ── SHARE MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:500;align-items:center;justify-content:center;padding:16px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px;max-width:480px;width:100%;}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-weight:400;font-size:1.3rem;color:var(--gold);letter-spacing:4px;margin-bottom:4px;}
+.modal-sub{font-size:0.78rem;color:var(--muted);margin-bottom:16px;}
+.share-url{background:#071228;border:1px solid var(--border);color:var(--text);border-radius:6px;padding:10px 12px;font-size:0.78rem;word-break:break-all;line-height:1.5;margin-bottom:12px;max-height:100px;overflow-y:auto;font-family:monospace;}
+.modal-btns{display:flex;gap:8px;flex-wrap:wrap;}
+.modal-btn{padding:10px 18px;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.85rem;letter-spacing:1px;cursor:pointer;border:none;transition:all .15s;}
+.modal-btn.gold{background:var(--gold);color:#001233;}
+.modal-btn.gold:hover{background:#e0b310;}
+.modal-btn.sec{background:transparent;border:1px solid var(--border);color:var(--muted);}
+.modal-btn.sec:hover{border-color:var(--blue);color:var(--white);}
+.share-hint{font-size:0.74rem;color:var(--muted);margin-top:10px;line-height:1.5;}
+.share-hint strong{color:var(--text);}
+
+.toast{display:none;position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--blue);color:var(--white);padding:10px 22px;border-radius:20px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.9rem;letter-spacing:1px;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.4);}
+
+@media(max-width:400px){.field-row{grid-template-columns:1fr;}.hbtn span{display:none;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-wrap">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIIAAAA/CAYAAAAsVxBWAAAV5klEQVR4nN2deZinRXHHvz0zO4vLcuyywCIBdkEOAcU7AQ8QTcADRETBxAODUQSNZ3xiTJQYo4QEFBVNYsRovBAPooKCGI2i4oEocgiIiAjqwuKyB3vOfPJHVc1b0/P+jpn57bKknud93vfXR3V1dXV3dXV1/4r+HwFQ/LP4o/TO3/RAVVrSkN5IUimlF54HDJTeSbYu8MbOj2QNM76lG8ZpGaroQBIPNCHZagWhpcEppYz1yDMqaXtJO/qzQNIOHra9pO0kzZE0T9LcDmjuk7Te3/dJWunPCkm/9+deSatKKZt60D8cP53+8W7035+w1QhCavghdWl0YCdJu0taKmkfSUsk7elhi2QCsJ2aRhg0bJC0WiYQyyTdIek2SbdK+oWkX0q6o5SysgP9I/45rq1o5LhfBQEYUoeG97i9JB0k6eH+HCBr9AX9oK+e2UDbdNSt3GUy4bhB0jWSfiLphlLKnVMSm2DcL1Nbhi0uCKnxx3LFgQdJOlDSoZIOk/QISXur8xA+pqaBeymJg4RaacyNl6eDGlZLuknSVZK+I+l7km7M00XizfiWnka2iCBEBes5FdhH0pMkPVXW+EtasucGD8Vsq5nSWiBoHddkuoeqdOOSbpT0LUmXS7qilPKbCSQdOszmgs3G0KRRU0n9wyUdI+lpkh6jqT0+hGXQjT5TZg6yfGQC0DZy3CvpSklfkPSVUsovJjLCsCT1UpZnAwMXhNCWc+/3nn+8pOdIelxVbvT4tl7Ts7j0btMFpjO3dyujH/zS9MroJhhrZSPFpyV9qZTyO2lS5xq4PjEwQagFAJgj6/UvkXSUpAel5JvUrBD6oaGtMaYrOONe7kb/XtuSZkjSNk7TqKSRPunLZcToN10hDKHAyw24WzZKfLiUcsVEYhslBiYQsxaEFgHYSdILJZ0i6eCUdJP6G+5zT5Gsp3RKv0HScpmW/ht/lkn6nYyB98hsAKv92SCzEXQShCKzMUgmuKOStpUtR3eQtFDSzpJ2kbRY0m6SdvVnoToriiEg/QpHXf+AKyR9QNJnSikbJBOIQUwZsxKETASwSNLLJZ0m6cGeJCS8W8/vNXdK1pi3SbpZtiS7UbZu/7Wku0opa2ZTj9kCsINMOP5AZtvYX7bU3U/SHpo8GgZkXajbyBa8yTy8TtL7JZ1fSlkXU8ZsBGJGguAarUop48C2kk6X9Go1AhC9v1MFOw2DkvXamyRdLekHkn4s6eZSym/7oKkuj+pdf3eDtj2Kml9dl3k+fO8uE4hHyZTjR8qEJeNCpiv1mi6joaOzXC/pzFLKf6Xytow9IjRY/z4R+BkNbATGaYdxYJM/dfg1wHmOb++0eTSlbGDEn2FgqFPaLQlAcVom0dch7RzgIOAU4KPALS282giMdeAjHpf5+E3gCamMzWVVnajssH/vA3x+GgKwsQpbDVwOvBY4uK0xE1OHt4bGngm0CMiUBgK2Af4IeCvw3aqBo/N04m0tEO/Bpqlsyh5ohYbS98nAPV7wJjpLbk3kGPAN4HRgr5Yyck/PPWskl781gTfytEalJBydBONg4G+BH1X87NbZsrDcCDzZcQ2uE9GMAtsA/14V3o8A/Bo4CzikE/4gtluDb23CUNMzU4a7YITglyr8cOB8YEWHRq8hRt5x4K870ToTIkMIdge+kwprIySGsYBrgVOBBQlfAeb6917AmSl8xL/nAEcCrwL+BngZsGQgFRoQJFpfC3wq/Z41ffhoUYXtAbwFuKMSiDYYoxmlP5b4PTPakhA8FPi5I97QofBM1PXAnwcBjmPEKzjkvx/sggJwckp3BPCTFvyrgBfPqkIDgsSXlyb6LqOZmwdppBtmsnK+CHgT8Juq4WvIetnXgB09//R4lyq7fyq0VviiwBCCe4C/wnYRA8/EcEczN+4L/NTzbAKWA/OB01Kl1gFrgfU0wjcGHDCjCg0IEl9OTDxY7+8fAUu8ngNVbkkjpv/eFTg38b6tbUi8u9J5XPrmnTdWARbTLG3ahqEsiRcBSzPDambQDJ/vqhgIjWB0UjyjQmdmXBXNWdns2hA0mvzESmgavBnGVk0vAO7EOsNap+/1NX1eRk/h8DS9lp61QBwK/DC1UduUHby7lEYR7y6oTFZcrnAEbdIWDbYeOD3ln6TwtOAeAuYB32shPt4/A16PrU6uTpUZBy6JBsmN06G8Tsxs09R7av4d8j0j8WEMOMXDR9satAtvprXuZ7JONQqck3jYTRg+4Hm6Ly1phr6zKgRtQvA74PDI16lBOuB/JI3RJOazDcD7gPkpfWY0wOUePlS9Dwb+HngdpmlPim8pf2/gw9i6PXSPjr024dsNOCiFH+J0xYh5UhsfPF9XgQUWYsL/QeD9wNxO9NR5/fslNIp8N2E4sc7biaDHpcapEYYQ3Akc7OnndCO2SzmfcVzr/H1hSjMX61H70Vgjx4GPBI6E5zBMmczwY+AEjx+qyj2Rxg4S8B+02ASYbER7A6bPbAQu8cY90PPHqPlMT3sw8ApMa78WWIkN4UtJ83TCfTRwW2qwE0jKdQ9+lmgD4Dgmd7C67caAZZjS2Y6fRjf4pmdsMwWPYWvah3meaVuv8OkDOCpVHGy1EKuLmMuWMNksfarjGPV0OwK/8ri1zoQ8lb3N0wejXp3qstbLjvI/kQWnaqj3MhVuxTT4bFQ7FHg7U6fTaJR3Jx6EMLwspVsDPLqmo0++Rh1PcFxtOkPQdU6uX0YSFT7SE7YpbdEYx+WCpws0q4j52PQSjFqPrZeHU6VemspeC+xZVfpDHl9PYZtSpWMoPL5iRkCUDfCq1FDBk9elMpYz1eIXzF4LnJ3CQ4Ec87xjwLmOM9b2R1f0n+HhozPkbfDlbYkPNa3jmIn/wZ52KCOISl9I+95AIPxoLnCmkMq7tGLEERGPzXn3JlrO97hRfx/h4dGInwMeRrMHss7pPgdr2NDwwdbWbwWu8t8xnN5MMyoVbOjPo8zzPe7Ciu74PhF4DvB4TA/5u4rGGKG28fe/0CzB1+C6BDNcHtOsPIZoFO1aGKIub/Q8IxOZ/b2AZu7MQ0pI0X1Uc9wsBCE03nenRgPrtUcDP6jKXoGNFnkDJ1f0t5hDjIBHVY30dGypF/g+nOhYhM2ZUc46YI8U/6mU7woPi2XnJ1oYvbSq5wEVLa/18BCEd6S8NzOAXUOaTnZMC33xexz4rqcrdcaneMJ6WghEn83pZ0lsCMIbHHdI6S9SuXlUOs7Tx2jwtIrBp3v4EGaYwiu7HNgB0z9CuJ+ENeS2nueDqZ7ZaLUHJvyR71gPn0Mzv1+UylqPdZQRTNkd8rKgGRFe5PlCEM5Mdbx6UsPMjr8xMoRFOLdp1GcNsFukz04Q4VZWO1qEk8MlNKeRBgUrqt9LvbwxmYPG3ZIOL6VchDtdeLrne7oRmdPKeQnHaR5XJJ0naSfZ4Zgi81e83R03Nnp9woW8aLLP4TEyz6Ii6S5J/+Phm9Q4hlzq7ygPd9kLh5Xtqvotjw8ve2OKCy+rQfA3XAe/6r9zm0Y950na18OG8hC/ewekkeYGZ+AgvV9qRo2p8dSRjNhn+0hAKWUTNpocqubE8gJMnxiWCcFBsoreJ+lsSUcmmlfJ3N7kYeGsKv9eLik8oZ6S8l0vaQ1Qggc+Kuzs8UWNP2SGBSleagQhzio8NqXdHD4X13UID8EIj7KSBWEbtUOkWe3vQQrCvtXvYVkvjzLnSXqNpPcll7BdNFloF0k6X9LPJJ0la4xhSf9QSrlX5mAaTF4naaU3YnEfv8UJ11WSVnlv3S/lu9sbbg6Nf+C47Eie1AhCjDIB81M8svOSKqVsBJ4k8+7elNIMGlb0iJ9Q+rMgtHn1So307OjvQRA85o3xxCr8Okkflx0mHVLjgv4XwCM8zU4yoY3p42xJ/yjpIbKhfK6kiyWd4+l/5e+NMiF6fCllvJSyAfhT2VmL8AU82xt8WNZoMU09Gdi/lLKhlILnXSzp2Wo6RpG0zvMHj2LEG5aNRvfSWGHf7XHB30FODQE79YjfEB9ZEG7vkDgIPXAQOgKNsvk4NcN4MPNDpZQXyPSV85y+OADzLC9/hZq5dVzSCbIRYbHMifZ0Scd6Y+0s0wE2Oq4RSZ/ETNynyYQu9AAkvRLYw+fX93r4mMxV/TLM5L3QFcpPyzpHCFGRtA8w4mWPaurcvNZHobfKnFg3qtE3Nmjw8LAO4dHuv/Y3edVweIuGGdo0wMWeblarBpoVw6UJf2iyT0z01Gv/y6J8zGsHmmXnasyR5UGeZgG2bLwF24L9ZVW3eI9XD17m8Y7n8x6W7QXLmGrAirzrgJuA7wN70qxgYtVwVgoLCP5+eUD8jd3OuTRm67ZVwypgl8iT7QjbeyVz4px5PbYunrEdgUYIssUw7OK3YKbjbN//dqrIatxTyeMu87i8zFzrlb8rhb2QZncu75+EybyuY8BxwLY0W/Hrq7wAFzB5oyfwne00/mGqZ+bpGGazuSnl+Uzm0SwEIXh8Yio7Q9Dyv56u1bL4kcSwOjPARZ5u2pZFmrX3gdgaNgiKss6IitAYbT7naaIH3gScge3yzcGcMwJyQwW8znEuxXpAWPGyu/gJmMtZwFrMwXae592fxkVsPY2wfMrjX5riSAwOc+/5KX4TZpsAG8Filxca8/OMBYHGjWAu5sRaCzs0/J4wp2cEIQiHeqJuew0n54pOg8CCza+3JwLjvRIzr054+Hq+v6yID/hQwn0sU93b7gH+zOPDrn8MUwXllQnPaZi18rEpLG9bfy/l+xgmiNHYp3v4CmxKiAYZwvZUIm+Uf43Hfy7hDF+G2QhC0PMex9lpr+H3mP401YBF02O/3AVJbP48IRfcB4HZKeWjji/b8MMGP5zSF8wEfBfNsL0BG03C1B0VHwH+BJsC3ombehO+eB+HWS9/ADwl5Y26l5y+yjuKOeM+t6pXxD8v4azx7YiNDMsx/WEvD7/S678B2D/nnS4kXsRuZptDUSu/a0QxHB/khLVtY8ZIcQ9waBBALVXthOZ9/v90PJuwYXd7pvoC5MbL8IUqvpMnUj4XkX0A5qXv7PYVW99zakFwIchhk5xYmLx1Xbvo5XQ705jJRzF9Zhz4To2nX2Cyt9KLEl/b2m4c27afwu8aaTD3TZ65m4fSauDZiZh+nShiZ++TjieG8FYXMn8fDfw3cAPwZCpfQ5qheGAHYjoyqXP64bY6eNwQ1day1yN66HM9bFrTQsWDN1YNniHrYkfXebsiBy72jN18FsH2vid6WC8GkoZfbK+/qzMlXXpbD/x7YO5rZwO7e9h8bKPnEuCfgO1S+l2Af/W4k6Js7GzFOY7nnZjeMpzLmg5gXldvolFAL2eaKzGnK2hYgOksnYQAmg79Ds/TW+Boeu32mMtXJ2HIGum3cM+aKKhH4864t/UjaE7/rtjBWvBTVsCXMB3hWGzb91IPnwNc5/EneZ6THNdHsKXql7DdvJWevi/PZH8vBb7A1AOvP3Q6pzOi5unsmTQ7jJ0OvIQQXOB5enbWXGB21ry2QljDxhT/z9g9CYGnl1fztL13+0yXV0EbMffzUafzhR73x/57EWbIAniIx10M3NCC99vAc3IZPegIPu6PTYWXAV/Bjg6+hGaJ2pf7ffod+AJ6CcFFJIebfniYCw9mLmayW3kbZELuwA667JhxsQVPNdMovuEFvb+HrcGcZrfD1vBjmCfyK/x7N093DmYlHKVRxP4N+HzmzYBo7dpRmDw17ol5Na3xeuXjbRmyTnAhjcI8M/4nYdgBGxr7LRzMXvAWqpPPbIHTzYnu8AkMj+vjMa35SuCzHvfQJAiLnfnnYoafsEEc4YLR2fu3Oz3hKFKf9J6ywoj4KvwQbJpbkfjbaRTI4e9KeGfXCZkskdm1qtMxq/ow7L3YPPtUqp6UmDPoI2IhCEc5nQdU8QV4udM3h8aTaD+Pvwz4aaLxVhrP34HeO9Cl8edjVs8vVvzsdKIpd8Q1NAaqwV0mwuR1+DOYvJnR6ZhamxPsNZgm/4iWMgZ2MUYShPDbC/f7V2Br7VOcvjd7+AimuH3N46A5F3FqCAl9KnU9aMtL3foAzlxMKN9Ds1EW0Ot+hIArsbssJ6bI2dDbqRIxX+5M4+sXhHQTiLb4q7Gl3BFA7akUkjyjK3JotPUl2BJ1kf8+Bfg0Nm+Gm3sI+I7YEvGzwDEJ15HAa5jZ/kq+FKN1SnReHoOdbrq5pYF73ZgSfL0Pu2Bjwto6HVpnsg7ON6kdKentMtcxafKFUG0QPoE1kXfI7ib+pqTvSrq+lLK6ShONFriz29yMbjmncT2bVlydTtP4/whgoczf4jBJR8jc1RbmJGqcbjrxsb5U6yJJby6lXO9lDJVp3uU841s+5Ne5+ffJkt4ou1KujdApKPyJa+PqCt8h6VpJP5Tdrna9pNtKKff1oklTb0Mblnk51df8BcPzBZ7DKW68Cq//m6HnxdnYnQlLZA44j5H0aNnF44uqpNFB+rmJLne0KyS9o5QSvgwjmuHdzYOYi8dLKWBr4pPVOJAG8WPqfmlmpAtPpba0yITjVtkdizfJ7lz8lexyzeWllHWzqctMAXOL30nmG7mXzNcxnqUy97gp2dTfdXpS+yj6LUnnllLiiMHEdYczrcdAFIlquhiV+QGeKrt5PSBGiV4VlxqhCP+/buv2+9TcvrpM5oV8t8wF/R6Z7+EqmU/gOplvZri6rU/fc9U4c24ju3V1nswBdb5s+F4o681x2+ouMk/mhers/Cs1I08/DS+19/4NMl/MD5RSvipNHpl74OsJA9Mo24gCDpP0YknPkjEuYDpCITVCkfWCfpnaBlH+xvQ9R43AzcRglEe1mdCXr+nN5d8i6QJJH086wMAEIGDgS4s0V08oS9hxtKdLep5MQZqfsuT5cSbOsZOUxvQdUCty/eKvBa8T3vq7X+g2HS6THU65QNLlpZS10sQUUAYpAAGb1eTbRjh2ovkoSc+Q9HhNVZymO4zOiLQe8ZujzDzdtSmFt0v6uqQvSvp6KSWfihrRZv5Xly1l+49Grf/EYyfZ0vOpsjMOB2nqH3mEYiUN5v8XNjfU01gnHWeV7J7pb0j6mqSr8pKZxgq7Re5W3uLMTLaAtj/02lt2efVhsvX1AZo6Ykwk19Q5uR7+B12/timoX53gDtky+PuSvi3pJ/WffW3pxs9wv/aqvPZv+w9FN77sKzPAHCJbgy+Rndlru/q+DbKwTJe5WaD6NS2vknSnpJ/LbCE/9fcttZHM6z+sLgaoLQVb1fAaOoU/rYYRN6Eulv3t3xJ/9pL9V8KusjX9DrI/3JjVhR4tsF62DF0hW57+VnZa6Jf+3Cab65e1zed5NNT93PA1bFWCUEOLtbAfa96o7Mzh9mr+BXYH2UplG/8uMl1kXpV9lcyCOCb7s621ssO/K/33Sn+6/gus05FXAlvVn322wVYtCG3QwbYvbeFe1iKkk5abW3Ojt8EDThB6Qdql7Md20GbKbkWrSs94oDV0L/g/edVTaNVnyQQAAAAASUVORK5CYII=" alt="Ready" style="height:42px;width:auto;display:block;">
+    <div>
+      <div class="club-name" id="headerTitle">READY – TAKTIKK</div>
+      <div class="club-sub" id="headerSub">KAMPPLANLEGGER</div>
+    </div>
+  </div>
+  <div class="header-btns">
+    <button class="hbtn blue" id="coachBtn" onclick="toggleCoach()" style="display:none">✏️ <span>REDIGER</span></button>
+    <button class="hbtn share" id="shareBtn" onclick="openShareModal()" style="display:none">📤 <span>DEL</span></button>
+    <button class="hbtn" id="menuBtn" onclick="toggleMenu()" style="display:none">☰ MENY</button>
+    <button class="hbtn" id="libBtn" onclick="showLibrary()">📋 <span>KAMPER</span></button>
+  </div>
+</header>
+
+<div id="readonlyBanner" class="readonly-banner" style="display:none">
+  👁️ LESETILGANG – Delt av trener
+</div>
+
+<!-- ══ LIBRARY ══ -->
+<div id="screenLibrary" class="screen active">
+  <div style="padding:16px;max-width:600px;margin:0 auto;">
+    <div class="lib-header">
+      <div><div class="lib-title">KAMPBIBLIOTEK</div><div class="lib-subtitle">VELG KAMP ELLER OPPRETT NY</div></div>
+      <button class="hbtn" style="border-color:var(--gold);color:var(--gold);" onclick="showNewMatch()">＋ NY KAMP</button>
+    </div>
+    <div id="matchList"><div class="empty-state"><div class="empty-icon">⚽</div><div class="empty-text">Ingen kamper ennå</div><p>Opprett din første kamp for å komme i gang</p></div></div>
+  </div>
+</div>
+
+<!-- ══ MATCH FORM ══ -->
+<div id="screenMatch" class="screen">
+  <div class="form-back">
+    <button class="back-btn" onclick="showLibrary()">← Tilbake</button>
+    <div class="form-title" id="matchFormTitle">NY KAMP</div>
+  </div>
+  <div class="form-section">
+    <div class="form-section-title">Type kamp</div>
+    <div class="pill-group" id="pillType">
+      <button class="pill selected" data-val="Serie" onclick="selectPill(&#39;pillType&#39;,this)">⚽ Serie</button>
+      <button class="pill" data-val="Turnering" onclick="selectPill(&#39;pillType&#39;,this)">🏆 Turnering</button>
+      <button class="pill" data-val="Trening" onclick="selectPill(&#39;pillType&#39;,this)">🎽 Trening</button>
+    </div>
+  </div>
+  <div class="form-section">
+    <div class="form-section-title">Lag og nivå</div>
+    <div style="margin-bottom:12px">
+      <label class="fl" style="margin-bottom:8px">Ready-lag</label>
+      <div class="pill-group" id="pillTeam">
+        <button class="pill selected gold-pill" data-val="G13" onclick="selectPill(&#39;pillTeam&#39;,this)">G13</button>
+        <button class="pill" data-val="G14" onclick="selectPill(&#39;pillTeam&#39;,this)">G14</button>
+        <button class="pill" data-val="G15" onclick="selectPill(&#39;pillTeam&#39;,this)">G15</button>
+        <button class="pill" data-val="G16" onclick="selectPill(&#39;pillTeam&#39;,this)">G16</button>
+      </div>
+    </div>
+    <div>
+      <label class="fl" style="margin-bottom:8px">Nivå</label>
+      <div class="pill-group" id="pillLevel">
+        <button class="pill selected" data-val="1" onclick="selectPill(&#39;pillLevel&#39;,this)">Nivå 1</button>
+        <button class="pill" data-val="2" onclick="selectPill(&#39;pillLevel&#39;,this)">Nivå 2</button>
+        <button class="pill" data-val="3" onclick="selectPill(&#39;pillLevel&#39;,this)">Nivå 3</button>
+      </div>
+    </div>
+  </div>
+  <div class="form-section">
+    <div class="form-section-title">Motstander og dato</div>
+    <div class="field-row full" style="margin-bottom:10px">
+      <div class="field-group"><label class="fl">Motstander *</label><input class="fi" id="fOpponent" type="text" placeholder="F.eks. Stabæk, Vålerenga..." autocomplete="off"></div>
+    </div>
+    <div class="field-row">
+      <div class="field-group"><label class="fl">Dato</label><input class="fi" id="fDate" type="date"></div>
+      <div class="field-group"><label class="fl">Notat</label><input class="fi" id="fNote" type="text" placeholder="Hjemme / borte..."></div>
+    </div>
+  </div>
+  <button class="big-save-btn" onclick="saveMatch()">LAGRE OG ÅPNE TAKTIKK →</button>
+  <p style="font-size:0.72rem;color:var(--muted);margin-top:10px;text-align:center;">* Motstander er påkrevd</p>
+</div>
+
+<!-- ══ TACTICS ══ -->
+<div id="screenTactics" class="screen">
+  <div class="match-bar">
+    <div class="match-bar-info">
+      <div class="match-bar-vs">MOT</div>
+      <div class="match-bar-name" id="barOpponent"></div>
+      <div class="match-bar-badges" id="barBadges"></div>
+    </div>
+    <div class="match-bar-actions">
+      <button class="icon-btn" id="editMatchBtn" onclick="editCurrentMatch()" title="Rediger kampinfo">✏️</button>
+    </div>
+  </div>
+
+  <div id="overlay"><div id="navList"></div></div>
+
+  <div id="coachPanel">
+    <div class="coach-header">
+      <div><div class="coach-title">✏️ REDIGER TAKTIKK</div></div>
+      <button class="hbtn" onclick="toggleCoach()">✕ LUKK</button>
+    </div>
+    <div class="coach-body">
+      <div class="editor-view-select" id="editorViewSelect"></div>
+      <div class="editor-section">
+        <div class="editor-section-title">📋 Navn</div>
+        <div class="field-row">
+          <div class="field-group"><label class="fl">Tittel</label><input class="fi" id="eTitle" type="text"></div>
+          <div class="field-group"><label class="fl">Undertittel</label><input class="fi" id="eSubtitle" type="text"></div>
+        </div>
+        <div style="margin-top:8px"><div class="field-group"><label class="fl">Kategori</label>
+          <select class="fi" id="eTag" style="max-width:200px">
+            <option value="FORMASJON">FORMASJON</option>
+            <option value="PRESS">PRESS</option>
+            <option value="DØDBALL">DØDBALL</option>
+            <option value="LAGET">LAGET</option>
+          </select>
+        </div></div>
+      </div>
+      <div class="editor-section">
+        <div class="editor-section-title">📝 Beskrivelse</div>
+        <div class="field-group" style="margin-bottom:8px"><label class="fl">Generell beskrivelse</label><textarea class="fi" id="eDesc" rows="3"></textarea></div>
+        <div class="field-group"><label class="fl">Ekstra instruksjon</label><textarea class="fi" id="eExtra" rows="2"></textarea></div>
+      </div>
+      <div class="editor-section" id="playersSection">
+        <div class="editor-section-title">⚽ Spillere og instruksjoner</div>
+        <p style="font-size:0.76rem;color:var(--muted);margin-bottom:10px;">X/Y posisjon: 0–100. Y=0 er toppen (motstanderens mål), Y=100 er bunnen (eget mål).</p>
+        <table class="player-table">
+          <thead><tr><th>Label</th><th>Rolle</th><th>X</th><th>Y</th><th>Instruksjon</th><th></th></tr></thead>
+          <tbody id="playerRows"></tbody>
+        </table>
+        <div class="action-row"><button class="abtn secondary" onclick="addPlayerRow()">+ Spiller</button></div>
+      </div>
+      <div class="editor-section" id="principlesSection" style="display:none">
+        <div class="editor-section-title">📜 Lagprinsipper</div>
+        <div id="principleRows"></div>
+        <div class="action-row"><button class="abtn secondary" onclick="addPrincipleRow()">+ Prinsipp</button></div>
+      </div>
+      <div class="action-row">
+        <button class="abtn gold" onclick="saveEditing()">💾 LAGRE</button>
+        <button class="abtn danger" onclick="deleteView()" id="deleteViewBtn">🗑 SLETT VISNING</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tactics-main">
+    <div style="margin-bottom:14px">
+      <span class="tag-badge" id="tagBadge"></span>
+      <div class="view-title" id="viewTitle"></div>
+      <div class="view-subtitle" id="viewSubtitle"></div>
+    </div>
+    <div id="pitchArea">
+      <svg id="pitchSvg" class="pitch-svg" viewBox="0 0 100 100">
+        <defs>
+          <marker id="ah" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><polygon points="0 0,5 2.5,0 5" fill="rgba(255,255,255,.9)"></polygon></marker>
+          <marker id="ahY" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><polygon points="0 0,5 2.5,0 5" fill="#F5C518"></polygon></marker>
+          <marker id="ahR" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><polygon points="0 0,5 2.5,0 5" fill="#FF6B6B"></polygon></marker>
+        </defs>
+        <rect y="0" width="100" height="17" fill="#27722a"></rect>
+        <rect y="17" width="100" height="17" fill="#2e7d32"></rect>
+        <rect y="34" width="100" height="17" fill="#27722a"></rect>
+        <rect y="51" width="100" height="17" fill="#2e7d32"></rect>
+        <rect y="68" width="100" height="17" fill="#27722a"></rect>
+        <rect y="85" width="100" height="15" fill="#2e7d32"></rect>
+        <rect x="2" y="1" width="96" height="98" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="0.7"></rect>
+        <line x1="2" y1="50" x2="98" y2="50" stroke="rgba(255,255,255,.75)" stroke-width="0.5"></line>
+        <circle cx="50" cy="50" r="9" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="0.5"></circle>
+        <circle cx="50" cy="50" r="0.8" fill="rgba(255,255,255,.8)"></circle>
+        <rect x="20" y="1" width="60" height="16" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="0.5"></rect>
+        <rect x="34" y="1" width="32" height="7" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="0.5"></rect>
+        <circle cx="50" cy="13" r="0.8" fill="rgba(255,255,255,.8)"></circle>
+        <rect x="38" y="0" width="24" height="2" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1"></rect>
+        <rect x="20" y="83" width="60" height="16" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="0.5"></rect>
+        <rect x="34" y="92" width="32" height="7" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="0.5"></rect>
+        <circle cx="50" cy="87" r="0.8" fill="rgba(255,255,255,.8)"></circle>
+        <rect x="38" y="98" width="24" height="2" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1"></rect>
+        <g id="dynamicLayer"></g>
+      </svg>
+      <p class="player-hint" id="playerHint">TRYKK PÅ EN SPILLER FOR Å SE ROLLEN</p>
+      <div class="player-box" id="playerBox">
+        <div class="player-box-top">
+          <div class="player-role" id="playerRole"></div>
+          <button class="close-btn" onclick="closePlayer()">✕ LUKK</button>
+        </div>
+        <div class="player-desc" id="playerDesc"></div>
+      </div>
+      <div class="info-card" id="descCard" style="display:none"><div class="card-label">Om formasjonen</div><div class="card-text" id="descText"></div></div>
+      <div class="extra-card" id="extraCard" style="display:none"><div class="extra-label">Instruksjon</div><div class="extra-text" id="extraText"></div></div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#F5C518;border-color:#F5C518;"></div>Keeper</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#0047AB;border-color:#5588cc;"></div>Utespillere</div>
+      </div>
+    </div>
+    <div class="principles" id="principlesArea" style="display:none"></div>
+    <div class="bottom-nav" id="bottomNav"></div>
+  </div>
+</div>
+
+<!-- ══ SHARE MODAL ══ -->
+<div class="modal-overlay" id="shareModal">
+  <div class="modal">
+    <div class="modal-title">📤 DEL MED SPILLERE</div>
+    <div class="modal-sub">Kopier lenken og send på SMS eller e-post</div>
+    <div class="share-url" id="shareUrl"></div>
+    <div class="modal-btns">
+      <button class="modal-btn gold" onclick="copyShareUrl()">📋 Kopier lenke</button>
+      <button class="modal-btn sec" onclick="closeShareModal()">Lukk</button>
+    </div>
+    <div class="share-hint">
+      <strong>Spillere ser kun taktikken</strong> – ingen rediger-knapper.<br>
+      Lenken inneholder all taktikkdata og trenger ingen innlogging.
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const GK='#F5C518', OUT='#0047AB', NS='http://www.w3.org/2000/svg';
+let matches=[], currentMatchId=null, currentViewKey='f1343', editingViewKey='f1343';
+let isReadOnly=false, readOnlyMatch=null;
+
+// ── DEFAULT TACTICS ──
+function defaultTactics(){return{
+  f1343:{title:'1-3-4-3',subtitle:'Grunnformasjon',tag:'FORMASJON',desc:'Vår grunnformasjon. Tre forsvarere, fire kompakt på midtbanen og tre angripere med bred spredning.',extra:'',
+    players:[
+      {id:'GK', label:'GK', cx:50,cy:88,color:GK, role:'Keeper',           desc:'Alltid med i oppspillsfasen. Første pasningsalternativ. Kort og presis pasning.'},
+      {id:'CB1',label:'SV', cx:22,cy:74,color:OUT,role:'Venstre stopper',  desc:'Holder bredden. Trekker opp i oppspillsfasen og lager trekant med midtstopper og wingback.'},
+      {id:'CB2',label:'MS', cx:50,cy:72,color:OUT,role:'Midtstopper',      desc:'Ankerpunkt i forsvaret. Løfter seg i oppspillsfasen. Organiserer forsvarslinjen.'},
+      {id:'CB3',label:'SH', cx:78,cy:74,color:OUT,role:'Høyre stopper',    desc:'Holder bredden. Støtter wingback framover.'},
+      {id:'LM', label:'LMF',cx:12,cy:55,color:OUT,role:'Venstre midtbane', desc:'Dekker venstresiden. Brei posisjon ved angrep, kompakt ved forsvar.'},
+      {id:'CM1',label:'CM', cx:35,cy:52,color:OUT,role:'Sentral midtbane', desc:'Bindeledd. Raske valg – maks 3 touch på motstanderens halvdel.'},
+      {id:'CM2',label:'CM', cx:65,cy:52,color:OUT,role:'Sentral midtbane', desc:'Dekker rom sentralt. Aggressiv ved balltap.'},
+      {id:'RM', label:'HMF',cx:88,cy:55,color:OUT,role:'Høyre midtbane',   desc:'Dekker høyresiden. Angrip på kanten!'},
+      {id:'LW', label:'LV', cx:15,cy:30,color:OUT,role:'Venstre ving',     desc:'Angrip kanten. Slå tidlig innlegg. Avslutt.'},
+      {id:'ST', label:'ST', cx:50,cy:25,color:OUT,role:'Spiss',            desc:'Bindeledd foran. Raske valg. Vis at du vil ha ballen.'},
+      {id:'RW', label:'HV', cx:85,cy:30,color:OUT,role:'Høyre ving',       desc:'Angrip kanten. Avslutt tidlig. Energi!'},
+    ],arrows:[]},
+  def5:{title:'1-5-4-1',subtitle:'Defensivt',tag:'FORMASJON',desc:'Defensiv fase. Wingbackene trekker ned og lager fem bak. Fire kompakt på midtbanen.',extra:'',
+    players:[
+      {id:'GK', label:'GK',cx:50,cy:88,color:GK, role:'Keeper',          desc:'Instruerer baklinjen. Klar til å ta lange baller.'},
+      {id:'LB', label:'LB',cx:10,cy:74,color:OUT,role:'Venstre wingback',desc:'Trekker ned. Holder bredden i fembacklinjen.'},
+      {id:'CB1',label:'SV',cx:27,cy:72,color:OUT,role:'Venstre stopper', desc:'Del av fembacklinjen. Kompakt mot midten.'},
+      {id:'CB2',label:'MS',cx:50,cy:70,color:OUT,role:'Midtstopper',     desc:'Leder forsvarslinja. Snakk hele tiden.'},
+      {id:'CB3',label:'SH',cx:73,cy:72,color:OUT,role:'Høyre stopper',   desc:'Kompakt. Del av fembacklinjen.'},
+      {id:'RB', label:'HB',cx:90,cy:74,color:OUT,role:'Høyre wingback',  desc:'Trekker ned. Holder bredden.'},
+      {id:'LM', label:'LM',cx:18,cy:54,color:OUT,role:'Venstre midtbane',desc:'Kompakt midtbanelinje. Hindre pasning sentralt.'},
+      {id:'CM1',label:'CM',cx:38,cy:52,color:OUT,role:'Sentral midtbane',desc:'Kompakt blokk. Ikke spre deg.'},
+      {id:'CM2',label:'CM',cx:62,cy:52,color:OUT,role:'Sentral midtbane',desc:'Kompakt blokk. Aggressiv ved balltap.'},
+      {id:'RM', label:'HM',cx:82,cy:54,color:OUT,role:'Høyre midtbane',  desc:'Kompakt. Hindre gjennombrudd.'},
+      {id:'ST', label:'ST',cx:50,cy:30,color:OUT,role:'Spiss / Presser', desc:'Hold trykket. Jobb hjem raskt ved tap.'},
+    ],arrows:[]},
+  off253:{title:'1-2-5-3',subtitle:'Offensivt',tag:'FORMASJON',desc:'Angrepsfase. To forsvarere holder bakerst, wingbackene løper opp og gir bredde.',extra:'',
+    players:[
+      {id:'GK', label:'GK', cx:50,cy:88,color:GK, role:'Keeper',                    desc:'Med i oppspillsfasen. Holder seg bak ved rask omstilling.'},
+      {id:'CB1',label:'SV', cx:32,cy:78,color:OUT,role:'Venstre stopper',           desc:'Holder forsvarslinja. Ikke gå for langt opp.'},
+      {id:'CB2',label:'SH', cx:68,cy:78,color:OUT,role:'Høyre stopper',             desc:'Holder forsvarslinja. Klar til rask omstilling.'},
+      {id:'LWB',label:'LWB',cx:8, cy:54,color:OUT,role:'Venstre wingback – offensiv',desc:'Løper høyt opp! Gir bredde. Slå innlegg tidlig.'},
+      {id:'LCM',label:'LCM',cx:30,cy:50,color:OUT,role:'Venstre sentral midtbane',  desc:'Støtter angrepet. Raske valg.'},
+      {id:'CM', label:'CM', cx:50,cy:48,color:OUT,role:'Sentral midtbane',          desc:'Dirigerer spillet. Maks 3 touch.'},
+      {id:'RCM',label:'HCM',cx:70,cy:50,color:OUT,role:'Høyre sentral midtbane',    desc:'Støtter angrepet. Aggressiv.'},
+      {id:'RWB',label:'HWB',cx:92,cy:54,color:OUT,role:'Høyre wingback – offensiv', desc:'Løper høyt opp! Innlegg tidlig.'},
+      {id:'LW', label:'LV', cx:15,cy:28,color:OUT,role:'Venstre ving',              desc:'Angrip kanten. Avslutt!'},
+      {id:'ST', label:'ST', cx:50,cy:24,color:OUT,role:'Spiss',                     desc:'Søk rom i boksen. Avslutt!'},
+      {id:'RW', label:'HV', cx:85,cy:28,color:OUT,role:'Høyre ving',                desc:'Angrip kanten. Avslutt!'},
+    ],arrows:[{x1:14,y1:76,x2:8,y2:57,color:'#F5C518'},{x1:86,y1:76,x2:92,y2:57,color:'#F5C518'}]},
+  utspill:{title:'1-4-3-3',subtitle:'Utspill',tag:'FORMASJON',desc:'Utspillsfase fra keeper. Bygg rolig fra bak.',extra:'',
+    players:[
+      {id:'GK', label:'GK', cx:50,cy:88,color:GK, role:'Keeper',                  desc:'Starter utspillet. Velg riktig side.'},
+      {id:'LB', label:'LB', cx:18,cy:76,color:OUT,role:'Venstre back',            desc:'Hold bredden. Spill enkelt fremover.'},
+      {id:'CB1',label:'SV', cx:36,cy:74,color:OUT,role:'Venstre stopper',         desc:'Kort pasning fra keeper.'},
+      {id:'CB2',label:'SH', cx:64,cy:74,color:OUT,role:'Høyre stopper',           desc:'Kort pasning fra keeper.'},
+      {id:'RB', label:'HB', cx:82,cy:76,color:OUT,role:'Høyre back',              desc:'Bred posisjon. Alltid spillbar.'},
+      {id:'LM', label:'LCM',cx:25,cy:54,color:OUT,role:'Venstre sentral midtbane',desc:'Triangler med backer.'},
+      {id:'CM', label:'CM', cx:50,cy:52,color:OUT,role:'Sentral midtbane',        desc:'Ankerpunkt. Snu spillet.'},
+      {id:'RM', label:'HCM',cx:75,cy:54,color:OUT,role:'Høyre sentral midtbane',  desc:'Triangler. Se etter rom.'},
+      {id:'LW', label:'LV', cx:12,cy:28,color:OUT,role:'Venstre ving',            desc:'Bred. Gi dybde.'},
+      {id:'ST', label:'ST', cx:50,cy:24,color:OUT,role:'Spiss',                   desc:'Gi rom. Finn dybde.'},
+      {id:'RW', label:'HV', cx:88,cy:28,color:OUT,role:'Høyre ving',              desc:'Bred. Alltid spillbar.'},
+    ],arrows:[{x1:50,y1:87,x2:36,y2:76,color:'#F5C518'},{x1:50,y1:87,x2:64,y2:76,color:'#F5C518'}]},
+  vingpress:{title:'Vingpress',subtitle:'Høyt press',tag:'PRESS',desc:'Lede motstander ut på siden. Lukket sentralt, åpent på kanten.',extra:'Komprimerer mot ballside og lukker sentralt.',
+    players:[
+      {id:'GK', label:'GK',cx:50,cy:88,color:GK, role:'Keeper',          desc:'Høy posisjon. Klar til å ta baller bak.'},
+      {id:'LB', label:'LB',cx:18,cy:74,color:OUT,role:'Venstre back',    desc:'Aggressiv på ballside.'},
+      {id:'CB1',label:'SV',cx:36,cy:72,color:OUT,role:'Venstre stopper', desc:'Hjelper presset. Lukk sentralt.'},
+      {id:'CB2',label:'SH',cx:64,cy:72,color:OUT,role:'Høyre stopper',   desc:'Lukk sentralt. Hold kompakt.'},
+      {id:'RB', label:'HB',cx:82,cy:74,color:OUT,role:'Høyre back',      desc:'Hold kompakt. Flytt mot ballside.'},
+      {id:'LM', label:'LM',cx:12,cy:54,color:OUT,role:'Venstre midtbane',desc:'Press aggressivt på ballside.'},
+      {id:'CM1',label:'CM',cx:36,cy:52,color:OUT,role:'Sentral midtbane',desc:'Lukk sentralt. Ingen pasning gjennom.'},
+      {id:'CM2',label:'CM',cx:64,cy:52,color:OUT,role:'Sentral midtbane',desc:'Lukk sentralt. Støtt pressen.'},
+      {id:'RM', label:'HM',cx:88,cy:54,color:OUT,role:'Høyre midtbane',  desc:'Dekk høyresiden.'},
+      {id:'ST', label:'ST',cx:50,cy:32,color:OUT,role:'Spiss',           desc:'Initierer pressen. Tving ut på siden.'},
+      {id:'LW', label:'LV',cx:15,cy:26,color:OUT,role:'Venstre ving',    desc:'Presser keeper eller back aggressivt.'},
+    ],arrows:[{x1:50,y1:34,x2:22,y2:38,color:'#FF6B6B'},{x1:18,y1:73,x2:10,y2:60,color:'#F5C518'},{x1:12,y1:53,x2:8,y2:44,color:'#F5C518'}]},
+  sentralpress:{title:'Sentraltpress',subtitle:'Høyt press',tag:'PRESS',desc:'Hindre ballen sentralt – tving motstander bredt.',extra:'Sluttsituasjon: ballen ute bredt – enklere å vinne tilbake.',
+    players:[
+      {id:'GK', label:'GK',cx:50,cy:88,color:GK, role:'Keeper',          desc:'Høy posisjon. Instruer baklinjen.'},
+      {id:'LB', label:'LB',cx:14,cy:74,color:OUT,role:'Venstre back',    desc:'Bred posisjon. Plukk opp ute.'},
+      {id:'CB1',label:'SV',cx:34,cy:72,color:OUT,role:'Venstre stopper', desc:'Press inn mot midten.'},
+      {id:'CB2',label:'SH',cx:66,cy:72,color:OUT,role:'Høyre stopper',   desc:'Press inn mot midten.'},
+      {id:'RB', label:'HB',cx:86,cy:74,color:OUT,role:'Høyre back',      desc:'Bred. Plukk opp ute.'},
+      {id:'LM', label:'LM',cx:16,cy:54,color:OUT,role:'Venstre midtbane',desc:'Bred. Dekk kanten.'},
+      {id:'CM1',label:'CM',cx:36,cy:50,color:OUT,role:'Sentral midtbane',desc:'Press midtstopper. Hindre sentralt.'},
+      {id:'CM2',label:'CM',cx:64,cy:50,color:OUT,role:'Sentral midtbane',desc:'Press. Ingen pasning gjennom.'},
+      {id:'RM', label:'HM',cx:84,cy:54,color:OUT,role:'Høyre midtbane',  desc:'Bred. Dekk kanten.'},
+      {id:'ST', label:'ST',cx:50,cy:30,color:OUT,role:'Spiss',           desc:'Press midtstopper direkte.'},
+      {id:'LW', label:'LV',cx:16,cy:24,color:OUT,role:'Venstre ving',    desc:'Aggressiv press fra siden.'},
+    ],arrows:[{x1:50,y1:32,x2:34,y2:38,color:'#FF6B6B'},{x1:50,y1:32,x2:66,y2:38,color:'#FF6B6B'},{x1:36,y1:52,x2:24,y2:58,color:'#F5C518'},{x1:64,y1:52,x2:76,y2:58,color:'#F5C518'}]},
+  corner:{title:'Corner',subtitle:'Angrepscorner',tag:'DØDBALL',desc:'«Tog-rekka» på bakerste stolpe. Tre i toget, to fra 5-meteren mot keeper.',extra:'Corner: Oscar · Frispark: Oscar / Lars · Kaptein: Gustav T · Straffer: Gustav T',
+    players:[
+      {id:'GK',label:'GK',cx:50,cy:88,color:GK, role:'Holder igjen',             desc:'Holder igjen – forsvar ved kontring.'},
+      {id:'H1',label:'HI',cx:90,cy:90,color:OUT,role:'Holder igjen',             desc:'To stk. holder igjen ute på banen.'},
+      {id:'KM',label:'KM',cx:50,cy:8, color:OUT,role:'Dekker keeper',            desc:'Dekker keeper slik at han ikke kan komme ut.'},
+      {id:'T1',label:'1.',cx:70,cy:15,color:OUT,role:'1. i tog → første stolpe', desc:'Løper mot FØRSTE STOLPE.'},
+      {id:'T2',label:'2.',cx:65,cy:20,color:OUT,role:'2. i tog → midten',        desc:'Løper mot MIDTEN av mål.'},
+      {id:'T3',label:'3.',cx:60,cy:25,color:OUT,role:'3. i tog → bakerste stolpe',desc:'Løper mot BAKERSTE STOLPE.'},
+      {id:'F1',label:'5m',cx:38,cy:16,color:OUT,role:'5-meter → inn mot keeper', desc:'Løper INN MOT KEEPER.'},
+      {id:'F2',label:'5m',cx:30,cy:16,color:OUT,role:'5-meter → inn mot keeper', desc:'Løper inn mot keeper.'},
+      {id:'R', label:'R', cx:24,cy:26,color:OUT,role:'Returrommet',              desc:'Klar til å avslutte på returer.'},
+    ],arrows:[{x1:70,y1:17,x2:37,y2:7,color:'#FFFFFF'},{x1:65,y1:22,x2:49,y2:7,color:'#FFFFFF'},{x1:60,y1:27,x2:60,y2:7,color:'#FFFFFF'},{x1:38,y1:18,x2:45,y2:9,color:'#F5C518'},{x1:30,y1:18,x2:38,y2:9,color:'#F5C518'}]},
+  prinsipper:{title:'Lagprinsipper',subtitle:'Regler & verdier',tag:'LAGET',desc:'',extra:'',players:[],arrows:[],
+    principles:[
+      {icon:'🏃',title:'Jobb hjem',             text:'Vi skal aldri gå. Når vi mister ballen, jogger eller løper vi hjem. Går du, bytter vi deg ut.'},
+      {icon:'✋',title:'Vis at du vil ha ballen',text:'Gjem deg ikke. Be om ballen og gjør deg spillbar. Gjemmer du deg, bytter vi deg ut.'},
+      {icon:'🎯',title:'Fokus på oss selv',      text:'Ingen klaging på dommer, bane eller motstander. Kjefter du på dommeren, bytter vi deg ut.'},
+      {icon:'⚡',title:'Raske valg fremover',    text:'På motstanderens halvdel: maks 3 touch. Ta avgjørelsen raskt.'},
+      {icon:'🛡️',title:'Kompakt + bredt',        text:'Compact når vi forsvarer – bredt når vi angriper. Hindre pasninger sentralt.'},
+      {icon:'⚔️',title:'Angrip på kanten',       text:'Vi angriper på kanten. Avslutt – bedre å avslutte enn å miste ballen.'},
+      {icon:'😄',title:'Ha det gøy!',            text:'Vis engasjement og passion! Spill med energi og glede!'},
+    ]},
+};}
+
+// ── STORAGE ──
+function saveAll(){ try{ localStorage.setItem('ready_v3',JSON.stringify(matches)); }catch(e){} }
+function loadAll(){ try{ const s=localStorage.getItem('ready_v3'); if(s) matches=JSON.parse(s); }catch(e){ matches=[]; } }
+
+// ── SHARE via URL hash ──
+// Encodes ONE match into a base64 URL hash for read-only sharing
+function buildShareUrl(matchId){
+  const m=getMatch(matchId); if(!m) return '';
+  const data={v:1,m:{id:m.id,opponent:m.opponent,type:m.type,team:m.team,level:m.level,date:m.date,note:m.note,tactics:m.tactics,viewOrder:m.viewOrder}};
+  const json=JSON.stringify(data);
+  const b64=btoa(unescape(encodeURIComponent(json)));
+  return location.href.split('#')[0]+'#share='+b64;
+}
+
+function openShareModal(){
+  const url=buildShareUrl(currentMatchId);
+  document.getElementById('shareUrl').textContent=url;
+  document.getElementById('shareModal').classList.add('open');
+}
+function closeShareModal(){ document.getElementById('shareModal').classList.remove('open'); }
+function copyShareUrl(){
+  const url=document.getElementById('shareUrl').textContent;
+  if(navigator.clipboard){ navigator.clipboard.writeText(url).then(()=>showToast('✓ Lenke kopiert!')); }
+  else{ const ta=document.createElement('textarea'); ta.value=url; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); showToast('✓ Lenke kopiert!'); }
+  closeShareModal();
+}
+
+// Check for share hash on load
+function checkShareHash(){
+  const hash=location.hash;
+  if(!hash.startsWith('#share=')) return false;
+  try{
+    const b64=hash.slice(7);
+    const json=decodeURIComponent(escape(atob(b64)));
+    const data=JSON.parse(json);
+    if(data.v===1&&data.m){
+      isReadOnly=true;
+      readOnlyMatch=data.m;
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+
+// ── SCREENS ──
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const inTactics=id==='screenTactics';
+  document.getElementById('menuBtn').style.display=inTactics&&!isReadOnly?'':'none';
+  document.getElementById('coachBtn').style.display=inTactics&&!isReadOnly?'':'none';
+  document.getElementById('shareBtn').style.display=inTactics&&!isReadOnly?'':'none';
+  document.getElementById('libBtn').style.display=isReadOnly?'none':'';
+  document.getElementById('editMatchBtn').style.display=isReadOnly?'none':'';
+  closeCoach(); closeMenu();
+}
+
+function showLibrary(){
+  showScreen('screenLibrary');
+  document.getElementById('headerTitle').textContent='READY – TAKTIKK';
+  document.getElementById('headerSub').textContent='KAMPPLANLEGGER';
+  renderMatchList();
+}
+
+let editingMatchId=null;
+function showNewMatch(){
+  editingMatchId=null;
+  document.getElementById('matchFormTitle').textContent='NY KAMP';
+  document.getElementById('fOpponent').value='';
+  document.getElementById('fDate').value=new Date().toISOString().slice(0,10);
+  document.getElementById('fNote').value='';
+  selectPill('pillType',document.querySelector('#pillType [data-val="Serie"]'));
+  selectPill('pillTeam',document.querySelector('#pillTeam [data-val="G13"]'));
+  selectPill('pillLevel',document.querySelector('#pillLevel [data-val="1"]'));
+  showScreen('screenMatch');
+}
+function editCurrentMatch(){
+  const m=getMatch(currentMatchId); if(!m) return;
+  editingMatchId=currentMatchId;
+  document.getElementById('matchFormTitle').textContent='REDIGER KAMP';
+  document.getElementById('fOpponent').value=m.opponent||'';
+  document.getElementById('fDate').value=m.date||'';
+  document.getElementById('fNote').value=m.note||'';
+  selectPill('pillType',document.querySelector(`#pillType [data-val="${m.type}"]`)||document.querySelector('#pillType .pill'));
+  selectPill('pillTeam',document.querySelector(`#pillTeam [data-val="${m.team}"]`)||document.querySelector('#pillTeam .pill'));
+  selectPill('pillLevel',document.querySelector(`#pillLevel [data-val="${String(m.level)}"]`)||document.querySelector('#pillLevel .pill'));
+  showScreen('screenMatch');
+}
+function editMatchFromLib(id){ currentMatchId=id; editCurrentMatch(); }
+function getMatch(id){ return matches.find(m=>m.id===id); }
+
+function saveMatch(){
+  const opponent=document.getElementById('fOpponent').value.trim();
+  if(!opponent){ showToast('Fyll inn motstandernavn!','#e05555'); return; }
+  const type=document.querySelector('#pillType .selected')?.dataset.val||'Serie';
+  const team=document.querySelector('#pillTeam .selected')?.dataset.val||'G13';
+  const level=document.querySelector('#pillLevel .selected')?.dataset.val||'1';
+  const date=document.getElementById('fDate').value;
+  const note=document.getElementById('fNote').value.trim();
+  if(editingMatchId){
+    const m=getMatch(editingMatchId);
+    Object.assign(m,{opponent,type,team,level:Number(level),date,note});
+    saveAll(); currentMatchId=editingMatchId; openMatch(currentMatchId); showToast('Kampinfo oppdatert!');
+  } else {
+    const m={id:'m'+Date.now(),opponent,type,team,level:Number(level),date,note,tactics:defaultTactics(),viewOrder:['f1343','def5','off253','utspill','vingpress','sentralpress','corner','prinsipper']};
+    matches.unshift(m); saveAll(); openMatch(m.id);
+  }
+}
+
+function openMatch(id){
+  const m=getMatch(id); if(!m) return;
+  currentMatchId=id;
+  currentViewKey=m.viewOrder[0]||'f1343';
+  renderMatchBar(m);
+  document.getElementById('headerTitle').textContent='vs. '+m.opponent;
+  document.getElementById('headerSub').textContent=m.type.toUpperCase()+' · '+m.team+' · NIVÅ '+m.level;
+  buildNav();
+  showScreen('screenTactics');
+  switchView(currentViewKey);
+}
+
+function renderMatchBar(m){
+  document.getElementById('barOpponent').textContent=m.opponent;
+  document.getElementById('barBadges').innerHTML=
+    `<span class="meta-badge badge-type-${(m.type||'serie').toLowerCase()}">${m.type}</span>`+
+    `<span class="meta-badge badge-team">${m.team}</span>`+
+    `<span class="meta-badge badge-level">Nivå ${m.level}</span>`+
+    (m.date?`<span class="meta-badge badge-date">${fmtDate(m.date)}</span>`:'')+
+    (m.note?`<span class="meta-badge badge-date">${m.note}</span>`:'');
+}
+
+function deleteMatch(id){
+  const m=getMatch(id); if(!m||!confirm(`Slett kamp mot ${m.opponent}?`)) return;
+  matches=matches.filter(x=>x.id!==id); saveAll(); renderMatchList();
+}
+
+function fmtDate(d){ if(!d) return ''; const p=d.split('-'); return `${p[2]}.${p[1]}.${p[0]}`; }
+
+function renderMatchList(){
+  const el=document.getElementById('matchList');
+  if(!matches.length){ el.innerHTML=`<div class="empty-state"><div class="empty-icon">⚽</div><div class="empty-text">Ingen kamper ennå</div><p>Opprett din første kamp for å komme i gang</p></div>`; return; }
+  el.innerHTML=matches.map(m=>`
+    <div class="match-card ${m.type==='Trening'?'training':m.type==='Turnering'?'tournament':''}" onclick="openMatch('${m.id}')">
+      <div class="match-card-top">
+        <div><div class="match-vs">MOT</div><div class="match-opponent">${m.opponent}</div></div>
+        <div class="match-card-actions" onclick="event.stopPropagation()">
+          <button class="icon-btn share-ico" title="Del med spillere" onclick="currentMatchId='${m.id}';openShareModal()">📤</button>
+          <button class="icon-btn" onclick="editMatchFromLib('${m.id}')">✏️</button>
+          <button class="icon-btn danger" onclick="deleteMatch('${m.id}')">🗑</button>
+        </div>
+      </div>
+      <div class="match-meta">
+        <span class="meta-badge badge-type-${(m.type||'serie').toLowerCase()}">${m.type}</span>
+        <span class="meta-badge badge-team">${m.team}</span>
+        <span class="meta-badge badge-level">Nivå ${m.level}</span>
+        ${m.date?`<span class="meta-badge badge-date">${fmtDate(m.date)}</span>`:''}
+        ${m.note?`<span class="meta-badge badge-date">${m.note}</span>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function selectPill(gid,btn){ if(!btn) return; document.querySelectorAll(`#${gid} .pill`).forEach(p=>p.classList.remove('selected')); btn.classList.add('selected'); }
+
+// ── TACTICS ──
+function getTactics(){ return isReadOnly?readOnlyMatch?.tactics:getMatch(currentMatchId)?.tactics||{}; }
+function getViewOrder(){ return isReadOnly?readOnlyMatch?.viewOrder:getMatch(currentMatchId)?.viewOrder||[]; }
+function tagStyle(tag){ return(tag==='PRESS'||tag==='DØDBALL')?{bg:'#F5C518',color:'#001233'}:{bg:'#0047AB',color:'#FFFFFF'}; }
+
+function buildNav(){
+  const t=getTactics(),vo=getViewOrder();
+  const secs={FORMASJON:[],PRESS:[],DØDBALL:[],LAGET:[]};
+  vo.forEach(k=>{ const v=t[k]; if(!v) return; const s=v.tag||'FORMASJON'; if(!secs[s]) secs[s]=[]; secs[s].push(k); });
+  let html='';
+  for(const [sec,keys] of Object.entries(secs)){ if(!keys.length) continue; html+=`<div class="nav-group"><div class="nav-section">${sec}</div>`; keys.forEach(k=>{ const v=t[k]; html+=`<button class="nav-item${k===currentViewKey?' active':''}" onclick="switchView('${k}')"><div class="nav-label">${v.title}</div><div class="nav-sub">${v.subtitle}</div></button>`; }); html+='</div>'; }
+  document.getElementById('navList').innerHTML=html;
+  let bn=''; vo.forEach(k=>{ const v=t[k]; if(!v) return; bn+=`<button class="bottom-btn${k===currentViewKey?' active':''}" onclick="switchView('${k}')">${v.title}</button>`; });
+  document.getElementById('bottomNav').innerHTML=bn;
+}
+
+function renderPlayers(players,selId){
+  document.querySelectorAll('.p-node').forEach(e=>e.remove());
+  (players||[]).forEach(p=>{
+    const g=document.createElementNS(NS,'g'); g.setAttribute('class','p-node'); g.style.cursor='pointer';
+    const sel=p.id===selId;
+    if(sel){ const gl=document.createElementNS(NS,'circle'); gl.setAttribute('cx',p.cx); gl.setAttribute('cy',p.cy); gl.setAttribute('r','8'); gl.setAttribute('fill','rgba(245,197,24,.25)'); g.appendChild(gl); }
+    const c=document.createElementNS(NS,'circle'); c.setAttribute('cx',p.cx); c.setAttribute('cy',p.cy); c.setAttribute('r',sel?'5.8':'5'); c.setAttribute('fill',p.color||OUT); c.setAttribute('stroke',sel?'#F5C518':'rgba(0,0,0,.5)'); c.setAttribute('stroke-width',sel?'1.5':'0.8');
+    const tf=(p.color||OUT)==='#F5C518'?'#001233':'#FFFFFF';
+    const t=document.createElementNS(NS,'text'); t.setAttribute('x',p.cx); t.setAttribute('y',p.cy); t.setAttribute('text-anchor','middle'); t.setAttribute('dominant-baseline','central'); t.setAttribute('fill',tf); t.setAttribute('font-size','2.2'); t.setAttribute('font-weight','800'); t.setAttribute('font-family',"'Barlow Condensed',sans-serif"); t.style.pointerEvents='none'; t.style.userSelect='none'; t.textContent=p.label;
+    g.appendChild(c); g.appendChild(t);
+    g.addEventListener('click',()=>selectPlayer(p));
+    document.getElementById('dynamicLayer').appendChild(g);
+  });
+}
+
+function switchView(key){
+  const t=getTactics(),v=t[key]; if(!v) return;
+  currentViewKey=key; buildNav();
+  const ts=tagStyle(v.tag);
+  const badge=document.getElementById('tagBadge'); badge.textContent=v.tag||''; badge.style.background=ts.bg; badge.style.color=ts.color;
+  document.getElementById('viewTitle').textContent=v.title;
+  document.getElementById('viewSubtitle').textContent=v.subtitle;
+  document.getElementById('playerBox').classList.remove('visible');
+  document.getElementById('playerHint').style.display='block';
+  if(v.tag==='LAGET'&&v.principles){
+    document.getElementById('pitchArea').style.display='none';
+    document.getElementById('principlesArea').style.display='flex';
+    document.getElementById('principlesArea').innerHTML=v.principles.map(p=>`<div class="principle"><div class="principle-title">${p.icon||''} ${p.title}</div><div class="principle-text">${p.text}</div></div>`).join('');
+  } else {
+    document.getElementById('pitchArea').style.display='block';
+    document.getElementById('principlesArea').style.display='none';
+    const layer=document.getElementById('dynamicLayer'); layer.innerHTML='';
+    (v.arrows||[]).forEach(a=>{ const m=a.color==='#F5C518'?'ahY':a.color==='#FF6B6B'?'ahR':'ah'; const ln=document.createElementNS(NS,'line'); ln.setAttribute('x1',a.x1); ln.setAttribute('y1',a.y1); ln.setAttribute('x2',a.x2); ln.setAttribute('y2',a.y2); ln.setAttribute('stroke',a.color); ln.setAttribute('stroke-width','1.4'); ln.setAttribute('stroke-dasharray','3.5 2.5'); ln.setAttribute('stroke-linecap','round'); ln.setAttribute('marker-end','url(#'+m+')'); ln.setAttribute('opacity','0.95'); layer.appendChild(ln); });
+    renderPlayers(v.players||[],null);
+    const dc=document.getElementById('descCard'); if(v.desc){dc.style.display='block';document.getElementById('descText').textContent=v.desc;}else{dc.style.display='none';}
+    const ec=document.getElementById('extraCard'); if(v.extra){ec.style.display='block';document.getElementById('extraText').textContent=v.extra;}else{ec.style.display='none';}
+  }
+  closeMenu();
+}
+
+function selectPlayer(p){ document.getElementById('playerRole').textContent=p.role; document.getElementById('playerDesc').textContent=p.desc||'Ingen instruksjon lagt til.'; document.getElementById('playerBox').classList.add('visible'); document.getElementById('playerHint').style.display='none'; renderPlayers(getTactics()[currentViewKey]?.players||[],p.id); }
+function closePlayer(){ document.getElementById('playerBox').classList.remove('visible'); document.getElementById('playerHint').style.display='block'; renderPlayers(getTactics()[currentViewKey]?.players||[],null); }
+
+// ── OVERLAYS ──
+function toggleMenu(){ const o=document.getElementById('overlay'),b=document.getElementById('menuBtn'); closeCoach(); const op=o.classList.toggle('open'); b.classList.toggle('active',op); b.textContent=op?'✕ MENY':'☰ MENY'; }
+function closeMenu(){ document.getElementById('overlay').classList.remove('open'); const b=document.getElementById('menuBtn'); b.classList.remove('active'); b.textContent='☰ MENY'; }
+function toggleCoach(){ const cp=document.getElementById('coachPanel'),cb=document.getElementById('coachBtn'); closeMenu(); const op=cp.classList.toggle('open'); cb.classList.toggle('active',op); if(op){ editingViewKey=currentViewKey; loadEditor(editingViewKey); } }
+function closeCoach(){ document.getElementById('coachPanel').classList.remove('open'); document.getElementById('coachBtn').classList.remove('active'); }
+
+// ── EDITOR ──
+function buildEditorViewSelect(){
+  const t=getTactics(),vo=getViewOrder();
+  let html=''; vo.forEach(k=>{ const v=t[k]; if(!v) return; html+=`<button class="ev-btn${k===editingViewKey?' active':''}" onclick="loadEditor('${k}')">${v.title}</button>`; });
+  html+=`<button class="ev-btn add-new" onclick="createNewView()">＋ NY</button>`;
+  document.getElementById('editorViewSelect').innerHTML=html;
+}
+function loadEditor(key){
+  editingViewKey=key; buildEditorViewSelect();
+  const t=getTactics(),v=t[key]; if(!v) return;
+  document.getElementById('eTitle').value=v.title||'';
+  document.getElementById('eSubtitle').value=v.subtitle||'';
+  document.getElementById('eTag').value=v.tag||'FORMASJON';
+  document.getElementById('eDesc').value=v.desc||'';
+  document.getElementById('eExtra').value=v.extra||'';
+  const isL=v.tag==='LAGET';
+  document.getElementById('playersSection').style.display=isL?'none':'block';
+  document.getElementById('principlesSection').style.display=isL?'block':'none';
+  document.getElementById('deleteViewBtn').style.display=getViewOrder().length>1?'block':'none';
+  buildPlayerRows(v.players||[]);
+  if(isL) buildPrincipleRows(v.principles||[]);
+}
+function esc(s){ return String(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function buildPlayerRows(players){
+  const tb=document.getElementById('playerRows'); tb.innerHTML='';
+  players.forEach((p,i)=>{ const tr=document.createElement('tr'); tr.innerHTML=`<td><input style="width:46px" value="${esc(p.label)}" onchange="upP(${i},'label',this.value)"/></td><td><input value="${esc(p.role)}" onchange="upP(${i},'role',this.value)" style="width:100%"/></td><td><input type="number" min="0" max="100" value="${p.cx}" onchange="upP(${i},'cx',+this.value)" style="width:44px"/></td><td><input type="number" min="0" max="100" value="${p.cy}" onchange="upP(${i},'cy',+this.value)" style="width:44px"/></td><td><input value="${esc(p.desc||'')}" onchange="upP(${i},'desc',this.value)" placeholder="Instruksjon..." style="width:100%"/></td><td><button class="del-row" onclick="delP(${i})">✕</button></td>`; document.getElementById('playerRows').appendChild(tr); });
+}
+function upP(i,f,v){ const t=getTactics()[editingViewKey]; if(t&&t.players) t.players[i][f]=v; }
+function delP(i){ const t=getTactics()[editingViewKey]; if(t&&t.players){ t.players.splice(i,1); buildPlayerRows(t.players); } }
+function addPlayerRow(){ const t=getTactics(); if(!t[editingViewKey].players) t[editingViewKey].players=[]; t[editingViewKey].players.push({id:'p'+Date.now(),label:'',cx:50,cy:50,color:OUT,role:'',desc:''}); buildPlayerRows(t[editingViewKey].players); }
+function buildPrincipleRows(pr){
+  const c=document.getElementById('principleRows'); c.innerHTML='';
+  pr.forEach((p,i)=>{ const d=document.createElement('div'); d.style.cssText='border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:8px;background:#071228;'; d.innerHTML=`<div style="display:flex;gap:8px;margin-bottom:6px"><input class="fi" style="width:48px" value="${esc(p.icon||'')}" onchange="upPr(${i},'icon',this.value)" placeholder="🏃"/><input class="fi" style="flex:1" value="${esc(p.title)}" onchange="upPr(${i},'title',this.value)" placeholder="Tittel"/><button class="del-row" onclick="delPr(${i})">✕</button></div><textarea class="fi" rows="2" onchange="upPr(${i},'text',this.value)" placeholder="Beskrivelse...">${esc(p.text)}</textarea>`; c.appendChild(d); });
+}
+function upPr(i,f,v){ const t=getTactics()[editingViewKey]; if(t&&t.principles) t.principles[i][f]=v; }
+function delPr(i){ const t=getTactics()[editingViewKey]; if(t&&t.principles){ t.principles.splice(i,1); buildPrincipleRows(t.principles); } }
+function addPrincipleRow(){ const t=getTactics()[editingViewKey]; if(!t.principles) t.principles=[]; t.principles.push({icon:'',title:'',text:''}); buildPrincipleRows(t.principles); }
+function saveEditing(){
+  const m=getMatch(currentMatchId); if(!m) return;
+  const v=m.tactics[editingViewKey]; if(!v) return;
+  v.title=document.getElementById('eTitle').value.trim()||v.title;
+  v.subtitle=document.getElementById('eSubtitle').value.trim();
+  v.tag=document.getElementById('eTag').value;
+  v.desc=document.getElementById('eDesc').value.trim();
+  v.extra=document.getElementById('eExtra').value.trim();
+  (v.players||[]).forEach(p=>{ p.color=(p.label==='GK'||p.role.toLowerCase().includes('keeper'))?GK:OUT; });
+  if(v.tag==='LAGET') v.players=[];
+  saveAll(); buildNav(); switchView(editingViewKey); loadEditor(editingViewKey); showToast('✓ Lagret!');
+}
+function deleteView(){
+  const m=getMatch(currentMatchId); if(!m||!confirm(`Slett «${m.tactics[editingViewKey]?.title}»?`)) return;
+  delete m.tactics[editingViewKey]; m.viewOrder=m.viewOrder.filter(k=>k!==editingViewKey); saveAll();
+  editingViewKey=m.viewOrder[0]; currentViewKey=editingViewKey;
+  buildNav(); switchView(currentViewKey); loadEditor(editingViewKey);
+}
+function createNewView(){
+  const m=getMatch(currentMatchId); if(!m) return;
+  const key='v'+Date.now();
+  m.tactics[key]={title:'Ny visning',subtitle:'Undertittel',tag:'FORMASJON',desc:'',extra:'',players:[{id:'GK',label:'GK',cx:50,cy:88,color:GK,role:'Keeper',desc:''},{id:'p1',label:'ST',cx:50,cy:25,color:OUT,role:'Spiss',desc:''}],arrows:[]};
+  m.viewOrder.push(key); saveAll(); buildNav(); editingViewKey=key; loadEditor(key);
+}
+document.getElementById('eTag').addEventListener('change',function(){
+  const isL=this.value==='LAGET';
+  document.getElementById('playersSection').style.display=isL?'none':'block';
+  document.getElementById('principlesSection').style.display=isL?'block':'none';
+  if(isL){ const t=getTactics()[editingViewKey]; if(!t.principles){ t.principles=[]; buildPrincipleRows([]); } }
+});
+
+// ── TOAST ──
+function showToast(msg,bg){ const t=document.getElementById('toast'); t.textContent=msg; t.style.background=bg||'var(--blue)'; t.style.display='block'; setTimeout(()=>t.style.display='none',2200); }
+
+// ── INIT ──
+loadAll();
+if(checkShareHash()){
+  // Read-only mode from shared URL
+  document.getElementById('readonlyBanner').style.display='block';
+  const m=readOnlyMatch;
+  currentMatchId=m.id;
+  currentViewKey=m.viewOrder[0]||'f1343';
+  renderMatchBar(m);
+  document.getElementById('headerTitle').textContent='vs. '+m.opponent;
+  document.getElementById('headerSub').textContent=(m.type||'').toUpperCase()+' · '+(m.team||'')+' · NIVÅ '+(m.level||'');
+  buildNav();
+  showScreen('screenTactics');
+  switchView(currentViewKey);
+} else {
+  showLibrary();
+}
+</script>
+
+
+</body></html>
